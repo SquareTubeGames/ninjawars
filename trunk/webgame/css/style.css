@@ -30,6 +30,52 @@ h1, h2, .title, .player-info .player-name{
 	font-weight:bold;
 	font-size:1.5em;
 }
+
+dl, dt, dd {margin: 0; padding: 0}
+ 
+dl {
+  font-size: 90%;
+}
+ 
+dl:after {
+  content: '.';
+  display: inline;
+  clear: both;
+  height: 0;
+  visibility: hidden;
+}
+ 
+dt {
+  clear: left;
+  margin-top: 0.5em;
+}
+ 
+dt+dt {
+  margin-top: 0;
+}
+ 
+dd+dt {
+  border-top: 1px solid #e0e0e0;
+}
+ 
+dt span.term {
+  float: left;
+  width: 10em;
+}
+ 
+dd {
+  margin-left: 10.3em;
+  padding-left: 0.8em;
+}
+ 
+dd p {
+  margin: 0;
+  padding: 0;
+}
+ 
+* html dl { height: 1px; }
+
+
 .clan-members .subtitle{
     background-color:DarkKhaki;
     color:black;
@@ -558,16 +604,24 @@ td.playerTable {
 }
 
 /*Quickstats styles*/
-.quickstats td{
+.quickstats{
 	background-color:black;
 }
 
-table .player-stats{
+.quickstats .player-stats{
 	border:thin solid blue;
+	width:50%;
+	float:left;
+	border: 0;
+	margin: 0;
 }
 
-table .inventory{
-	border:thick solid red;
+.quickstats .inventory{
+	border:thin solid red;
+	width: 50%;
+	float:left;
+	border: 0;
+	margin: 0;
 }
 
 /*List all players and player profile styles*/

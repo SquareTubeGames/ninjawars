@@ -19,6 +19,15 @@ function delete_mail($ids, $all=false){
     return $deleted;
 }
 
+/**
+ * Pull the count of mail.
+**/
+function mail_count(){
+    $username = get_username();
+    $sql = new DBAccess();
+    return $sql->QueryItem("SELECT count(*) FROM mail WHERE send_to = '$username'");
+}
+
 
 
 

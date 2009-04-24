@@ -24,8 +24,8 @@ $status_array = getStatus($username);
 $row = $sql->data;
 if ($class != "") {
 	echo "You are a level $level, $class Ninja.<br />\n";
-	$status_output_list = status_output_list($status_array, $username);
-	echo "Your status is: ".$status_output_list."<br /><br />";
+	$statuses = implode(',', statuses($status_array, $username));
+	echo "Your status is: ".$statuses."<br /><br />";
 
   if ($class == "Black") {
   	  echo "By selecting Stealth you will go into a mode where enemies can not directly attack you for a short time. ";

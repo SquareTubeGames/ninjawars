@@ -6,6 +6,7 @@ $page_title = "Quickstats";
 
 include_once("interface/header.php");
 require_once(LIB_ROOT."specific/lib_status.php");
+require_once(LIB_ROOT."specific/lib_mail.php");
 
 // *** Turning the header variables into variables for this page.
 $command  = in('command');
@@ -19,108 +20,31 @@ $class    = $players_class;
 $bounty   = $players_bounty;
 $status   = $players_status;  //The status variable is an array, of course.
 
-$low_health_css = '';
-if($health<80){
-    // Make health display red if it goes below 80.
-    $low_health_css = " style='color:red;font-weight:bold;'";
-}
 
 
-//$member   = $sql->QueryItem("SELECT member FROM players WHERE uname = '$username'");  //UNUSED IN PAGE
-//$clan   = $players_clan;    //UNUSED IN PAGE
 
-if ($command != "viewinv") {
-  echo "<table style=\"border: 0;\" class='quickstats player-stats'>\n";
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Health: \n";
-  echo "  </td>\n";
-  
-  echo "  <td>\n";
-  echo    "<span ".$low_health_css.">".$health."</span>\n";
+$mail_count = mail_count();
+$standard_stats = array(
+    "Turns" => $turns,
+    "Gold" => $gold,
+    "Bounty" => $bounty,
+    "Mail" => $mail_count,
+);
 
-  echo "  </td>\n";
-  echo "</tr>\n";
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Status: \n";
-  echo "  </td>\n";
-  
-  echo "  <td>\n";
-  
-	$status_output_list = status_output_list($status_array, $username);
-	echo $status_output_list;
-   
+echo "<div class='quickstats'>";
+echo render_health($health); // Display current health.
+//if ($command != "viewinv") {
+    echo "<div class='player-stats'>";
+    echo render_stats($standard_stats); // Display the stats.
+    echo "</div>";
+//} else if ($command == "viewinv") { // Display all the items in the inv.
+    echo "<div class='inventory'>";
+    echo render_inventory();
+    echo "</div>";
+//}
+echo "</div>";
 
-  
-  echo "  </td>\n";
-  echo "</tr>\n";
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Turns: \n";
-  echo "  </td>\n";
 
-  echo "  <td>\n";
-  echo    $turns."\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Gold: \n";
-  echo "  </td>\n";
-
-  echo "  <td>\n";
-  echo    $gold."\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Bounty: \n";
-  echo "  </td>\n";
-
-  echo "  <td>\n";
-  echo    $bounty."\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
-
-  /*Comment out mail to speed up quickstats.
-  $count = $sql->QueryItem("SELECT count(send_to) FROM mail WHERE send_to = '".$_SESSION['username']."' ");
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Mail: \n";
-  echo "  </td>\n";
-  echo "  <td>\n";
-  echo    $count."<br />\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
-  */
-
-  echo "</table>\n";
-}
-else if ($command == "viewinv") {
-  $sql->Query("SELECT item, amount FROM inventory WHERE owner = '".$_SESSION['username']."' ORDER BY item");
-  foreach($sql->FetchAll() AS $loopItem) {
-      echo "<table style=\"border: 0;\" class='quickstats inventory'>\n";
-      echo "<tr>\n";
-      echo "  <td>\n";
-      echo "  ".$loopItem['item'].": \n";
-      echo "  </td>\n";
-      echo "  <td>\n";
-      echo    $loopItem['amount']."<br />\n";
-      echo "  </td>\n";
-      echo "</tr>\n";
-  }
-
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "Gold: \n";
-  echo "  </td>\n";
-  echo "  <td>\n";
-  echo    $players_gold." <br />\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
-  echo "</table>\n";
-}
 
 ?>
 </body>
